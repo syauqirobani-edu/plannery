@@ -18,7 +18,7 @@ def load_users():
 
 def save_user(username, password):
     with open(USERS_FILE, "a") as f:
-        f.write(f"{username}|{password}\n")
+        f.write(f"{username}|{password}\n") # TODO: Tambah enkripsi kalau bisa/sempet.
 
 def register():
     users = load_users()
@@ -30,7 +30,7 @@ def register():
         print("Nama pengguna sudah ada!")
         return None
 
-    password = input("Kata Sandi: ").strip()
+    password = input("Kata Sandi: ").strip() # TODO: Tambah sensor kata sandi kalau bisa/sempet.
 
     save_user(username, password)
     print("Registrasi berhasil!")
