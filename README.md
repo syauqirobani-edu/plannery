@@ -34,4 +34,4 @@ Aplikasi ini, untuk sekarang, menggunakan berkas teks untuk penyimpanan (bukan b
 
 ### **Fitur Sekunder**
 - Pengingat bersifat personal untuk pengguna yang terlalu sering melewatkan tenggat - 0%
-- Pengingat untuk admin/pengguna yang terlalu banyak memberikan tugas pada seorang anggota
+- Pengingat untuk admin/pengguna yang terlalu banyak memberikan tugas pada seorang anggota - 0%
