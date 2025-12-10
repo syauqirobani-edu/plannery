@@ -13,25 +13,25 @@ Aplikasi ini, untuk sekarang, menggunakan berkas teks untuk penyimpanan (bukan b
 
 ### **Fitur Primer**
 1. **Sistem Pengguna**
-   - Registrasi - 0%
-   - Login - 0%
-   - Status (Pemilik / Admin / Anggota) - 0%
+   - Registrasi - Selesai
+   - Login - Selesai
+   - Status (Pemilik / Admin / Anggota) - Belum Selesai
 2. **Sistem Proyek**
-   - Membuat Proyek - 0%
-   - Melihat Proyek - 0%
-   - Memperbaharui Proyek - 0%
-   - Menghapus Proyek - 0%
+   - Membuat Proyek - Belum Selesai
+   - Melihat Proyek - Belum Selesai
+   - Memperbaharui Proyek - Belum Selesai
+   - Menghapus Proyek - Belum Selesai
 3. **Sistem Tugas**
-   - Membuat Tugas - 0%
-   - Melihat Tugas - 0%
-   - Memperbaharui Tugas - 0%
-   - Menghapus Tugas - 0%
-   - Melacak tenggat - 0%
-   - Memberikan tugas pada anggota - 0%
+   - Membuat Tugas - Belum Selesai
+   - Melihat Tugas - Belum Selesai
+   - Memperbaharui Tugas - Belum Selesai
+   - Menghapus Tugas - Belum Selesai
+   - Melacak tenggat - Belum Selesai
+   - Memberikan tugas pada anggota - Belum Selesai
 4. **Sistem Pengiriman**
-   - Mengirimkan tugas yang telah selesai - 0%
-   - Disimpan per tugas dan per proyek - 0%
+   - Mengirimkan tugas yang telah selesai - Belum Selesai
+   - Disimpan per tugas dan per proyek - Belum Selesai
 
 ### **Fitur Sekunder**
-- Pengingat bersifat personal untuk pengguna yang terlalu sering melewatkan tenggat - 0%
-- Pengingat untuk admin/pengguna yang terlalu banyak memberikan tugas pada seorang anggota - 0%
+- Pengingat bersifat personal untuk pengguna yang terlalu sering melewatkan tenggat - Belum Selesai
+- Pengingat untuk admin/pengguna yang terlalu banyak memberikan tugas pada seorang anggota - Belum Selesai
