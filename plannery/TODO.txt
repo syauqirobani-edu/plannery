@@ -1,0 +1,16 @@
+1. Login & Registrasi
+- Cegah user membuat nama pengguna apabila: 
+ - data kosong pada variable "username"; 
+ - hanya terdapat angka tanpa huruf pada variable "username"; dan
+ - terdapat simbol pada variable "username"
+- Cegah user membuat kata sandi apabila: 
+ - data kosong pada variable "password"
+
+2. Sistem Proyek
+- Cegah user membuat proyek baru apabila: 
+ - data kosong pada variabel "project_name"
+- Cegah user menyunting data baru apabila: 
+ - data kosong pada variabel "project_name"
+
+3. Sistem Tugas
+- Cegah user membuat tugas baru apabila 
