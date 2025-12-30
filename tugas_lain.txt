@@ -1,3 +1,0 @@
-Membuat Flowchart|Membuat diagram alur program sesuai modul
-Menulis Pseudocode|Menuliskan langkah logika program
-Implementasi Program|Mengubah pseudocode menjadi kode
