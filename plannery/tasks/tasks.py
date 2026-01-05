@@ -61,8 +61,17 @@ def create_task(project_id, current_user):
     assigns = read_assigned_members()
 
     task_name = input("Nama tugas: ")
+    # TODO: Tolak apabila variabel "task_name" kosong.
+    # TODO: Tolak apabila variabel "task_name" mempunyai simbol.
+
     desc = input("Deskripsi tugas: ")
+    # TODO: Tolak apabila variabel "desc" kosong.
+    # TODO: Tolak apabila variabel "desc" mempunyai simbol.
+
     due_date = input("Deadline (YYYY-MM-DD): ")
+
+    # TODO: Hapus whitespace dari variabel "task_name", "desc", serta "due_date".
+    # TODO: Validasi format variabel "due_date" (mesti DD-MM-YYYY)
 
     task_id = len(tasks) + 1
 
