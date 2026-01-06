@@ -50,9 +50,11 @@ def register():
 
     username = input("Nama Pengguna: ")
 
-    # TODO: Tolak apabila variabel "username" kosong.
-    # TODO: Hapus whitespace tidak perlu dari variabel "username".
-    # TODO: Tolak simbol pada variabel "username."
+    # menolak bila variabel "username" kosong
+
+    # menghapus whitespace pada data "username"
+
+    # menolak simbol pada variabel "username."
 
     if username_exists(username):
         print("Nama pengguna sudah dipakai.")
@@ -60,10 +62,15 @@ def register():
     
     password = input("Kata Sandi: ")
 
-    # TODO: Tolak apabila variabel "password" kosong.
-    # TODO: Tolak apabila variabel "password" kurang dari 8 karakter.
-    # TODO: Tolak apabila terdapat koma pada variabel "password".
-    # TODO: Buat variabel "confirm_password" di mana pengguna diharuskan untuk meng-input variabel "password" kembali, dan buat function untuk membandingkan keduanya.
+    # Menolak apabila variabel "password" kosong.
+
+    # menolak apabila variabel "password" kurang dari 8 karakter.
+
+    # menolak apabila terdapat koma pada variabel "password".
+
+    # membuat variabel "confirm_password" di mana pengguna diharuskan untuk meng-input variabel "password" kembali
+
+    # membuat function untuk membandingkan keduanya.
 
     new_id = get_next_user_id(users)
 
