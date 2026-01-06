@@ -72,7 +72,9 @@ def register():
         print("Kata sandi tidak boleh kosong!")
         return
 
-    # menolak apabila variabel "password" kurang dari 8 karakter.
+    if len (password) < 8 :
+        print("Kata sandi minimal 8 karakter!")
+        return
 
     # menolak apabila terdapat koma pada variabel "password".
 
