@@ -64,7 +64,9 @@ def create_task(project_id, current_user):
     if not task_name.strip(): 
         print("Nama tugas tidak boleh kosong.")
         return
-    # TODO: Tolak apabila variabel "task_name" mempunyai simbol.
+    if any(not c.isalnum() and not c.isspace() for c in task_name):
+        print("Nama tugas tidak boleh berisi simbol.")
+        return
 
     desc = input("Deskripsi tugas: ")
     # TODO: Tolak apabila variabel "desc" kosong.
