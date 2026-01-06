@@ -77,11 +77,12 @@ def create_task(project_id, current_user):
         return
 
     due_date = input("Deadline (YYYY-MM-DD): ")
-
+    # hapus whitespace 
     task_name = task_name.strip()
     desc = desc.strip()
     due_date = due_date.strip()
-    # TODO: Validasi format variabel "due_date" (mesti DD-MM-YYYY)
+
+    # validasi deadline
     if not due_date:
         print("Deadline tidak valid! (DD-MM-YYYY)")
         return
