@@ -68,7 +68,9 @@ def register():
     
     password = input("Kata Sandi: ")
 
-    # Menolak apabila variabel "password" kosong.
+    if not password:
+        print("Kata sandi tidak boleh kosong!")
+        return
 
     # menolak apabila variabel "password" kurang dari 8 karakter.
 
