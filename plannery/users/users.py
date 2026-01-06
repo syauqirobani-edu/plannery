@@ -54,7 +54,7 @@ def register():
         print("Nama Pengguna tidak boleh kosong!")
         return
     
-    # menghapus whitespace pada data "username"
+    username = username.split()
 
     # menolak simbol pada variabel "username."
 
