@@ -70,6 +70,9 @@ def create_task(project_id, current_user):
 
     desc = input("Deskripsi tugas: ")
     # TODO: Tolak apabila variabel "desc" kosong.
+    if not desc.strip():
+        print("Deskripsi tugas tidak bolek kosong.")
+        return
     # TODO: Tolak apabila variabel "desc" mempunyai simbol.
 
     due_date = input("Deadline (YYYY-MM-DD): ")
