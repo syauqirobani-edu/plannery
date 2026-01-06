@@ -79,6 +79,9 @@ def create_task(project_id, current_user):
     due_date = input("Deadline (YYYY-MM-DD): ")
 
     # TODO: Hapus whitespace dari variabel "task_name", "desc", serta "due_date".
+    task_name = task_name.strip()
+    desc = desc.strip()
+    due_date = due_date.strip()
     # TODO: Validasi format variabel "due_date" (mesti DD-MM-YYYY)
 
     task_id = len(tasks) + 1
