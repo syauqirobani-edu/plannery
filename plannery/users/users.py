@@ -47,16 +47,20 @@ def username_exists(username):
 
 def register():
     users = read_users()
+    simbol = "!@#$%^&*(),.?\":{}|<>"
 
     username = input("Nama Pengguna: ")
 
     if not username: 
-        print("Nama Pengguna tidak boleh kosong!")
+        print("Nama pengguna tidak boleh kosong!")
         return
     
-    username = username.split()
+    username = username.strip()
 
-    # menolak simbol pada variabel "username."
+    for char in username:
+        if char in simbol:
+            print("Nama pengguna tidak boleh mengandung simbol!")
+            return
 
     if username_exists(username):
         print("Nama pengguna sudah dipakai.")
