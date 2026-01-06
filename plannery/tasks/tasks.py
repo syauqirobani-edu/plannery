@@ -61,7 +61,9 @@ def create_task(project_id, current_user):
     assigns = read_assigned_members()
 
     task_name = input("Nama tugas: ")
-    # TODO: Tolak apabila variabel "task_name" kosong.
+    if not task_name.strip(): 
+        print("Nama tugas tidak boleh kosong.")
+        return
     # TODO: Tolak apabila variabel "task_name" mempunyai simbol.
 
     desc = input("Deskripsi tugas: ")
