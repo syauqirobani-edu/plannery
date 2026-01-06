@@ -50,8 +50,10 @@ def register():
 
     username = input("Nama Pengguna: ")
 
-    # menolak bila variabel "username" kosong
-
+    if not username: 
+        print("Nama Pengguna tidak boleh kosong!")
+        return
+    
     # menghapus whitespace pada data "username"
 
     # menolak simbol pada variabel "username."
