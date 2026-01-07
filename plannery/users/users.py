@@ -76,7 +76,9 @@ def register():
         print("Kata sandi minimal 8 karakter!")
         return
 
-    # menolak apabila terdapat koma pada variabel "password".
+    if "," in password:
+        print("Kata sandi tidak boleh mengandung koma")
+        return
 
     # membuat variabel "confirm_password" di mana pengguna diharuskan untuk meng-input variabel "password" kembali
 
