@@ -61,17 +61,31 @@ def create_task(project_id, current_user):
     assigns = read_assigned_members()
 
     task_name = input("Nama tugas: ")
-    # TODO: Tolak apabila variabel "task_name" kosong.
-    # TODO: Tolak apabila variabel "task_name" mempunyai simbol.
+    if not task_name.strip(): 
+        print("Nama tugas tidak boleh kosong.")
+        return
+    if any(not c.isalnum() and not c.isspace() for c in task_name):
+        print("Nama tugas tidak boleh berisi simbol.")
+        return
 
     desc = input("Deskripsi tugas: ")
-    # TODO: Tolak apabila variabel "desc" kosong.
-    # TODO: Tolak apabila variabel "desc" mempunyai simbol.
+    if not desc.strip():
+        print("Deskripsi tugas tidak bolek kosong.")
+        return
+    if any(not c.isalnum() and not c.isspace() for c in desc):
+        print("Deskripsi tugas tidak boleh berisi simbol.")
+        return
 
     due_date = input("Deadline (YYYY-MM-DD): ")
+    # hapus whitespace 
+    task_name = task_name.strip()
+    desc = desc.strip()
+    due_date = due_date.strip()
 
-    # TODO: Hapus whitespace dari variabel "task_name", "desc", serta "due_date".
-    # TODO: Validasi format variabel "due_date" (mesti DD-MM-YYYY)
+    # validasi deadline
+    if not due_date:
+        print("Deadline tidak valid! (DD-MM-YYYY)")
+        return
 
     task_id = len(tasks) + 1
 
