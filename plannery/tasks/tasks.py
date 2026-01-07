@@ -70,7 +70,7 @@ def create_task(project_id, current_user):
 
     desc = input("Deskripsi tugas: ")
     if not desc.strip():
-        print("Deskripsi tugas tidak bolek kosong.")
+        print("Deskripsi tugas tidak boleh kosong.")
         return
     if any(not c.isalnum() and not c.isspace() for c in desc):
         print("Deskripsi tugas tidak boleh berisi simbol.")
