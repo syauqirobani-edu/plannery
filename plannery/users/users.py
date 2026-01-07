@@ -45,6 +45,9 @@ def username_exists(username):
             return True
     return False
 
+def check_password(password, confirm_password):
+    return password == confirm_password
+
 def register():
     users = read_users()
     simbol = "!@#$%^&*(),.?\":{}|<>"
@@ -80,9 +83,14 @@ def register():
         print("Kata sandi tidak boleh mengandung koma")
         return
 
-    # membuat variabel "confirm_password" di mana pengguna diharuskan untuk meng-input variabel "password" kembali
+    confirm_password = input ("Konfirmasi kata sandi: ")
 
     # membuat function untuk membandingkan keduanya.
+    if not check_password(password, confirm_password):
+        print("Kata sandi tidak sama! silahkan konfirmasi kembali kata sandi.")
+        return
+    
+    print("Kata sandi valid")
 
     new_id = get_next_user_id(users)
 
@@ -100,7 +108,7 @@ def register():
 
     
     print("Pengguna berhasil teregistrasi!")
-    print("ID pengguna Anda alah: ", new_id)
+    print("ID pengguna Anda adalah: ", new_id)
 
 def login():
     users = read_users()
