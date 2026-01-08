@@ -50,7 +50,7 @@ def check_password(password, confirm_password):
 
 def register():
     users = read_users()
-    simbol = "!@#$%^&*(),.?\":{}|<>"
+    simbol = "!@#$%^&*().?\":{}|<>"
 
     username = input("Nama Pengguna: ")
 
@@ -69,7 +69,7 @@ def register():
         print("Nama pengguna sudah dipakai.")
         return
     
-    password = input("Kata Sandi: ")
+    password = input("Masukkan Kata Sandi : ")
 
     if not password:
         print("Kata sandi tidak boleh kosong!")
@@ -79,13 +79,24 @@ def register():
         print("Kata sandi minimal 8 karakter!")
         return
 
+    ada_simbol = False
+
+    for char in password:
+        if char in simbol:
+            ada_simbol = True
+            break
+
+    if not ada_simbol:
+        print("Kata sandi harus mengandung minimal satu simbol!")
+        return
+
     if "," in password:
         print("Kata sandi tidak boleh mengandung koma")
         return
 
     confirm_password = input ("Konfirmasi kata sandi: ")
 
-    # membuat function untuk membandingkan keduanya.
+
     if not check_password(password, confirm_password):
         print("Kata sandi tidak sama! silahkan konfirmasi kembali kata sandi.")
         return
