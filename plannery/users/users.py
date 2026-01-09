@@ -58,7 +58,7 @@ def register():
         print("Nama pengguna tidak boleh kosong!")
         return
     
-    username = username.split()
+    username = username.strip()
 
     for char in username:
         if char in simbol:
