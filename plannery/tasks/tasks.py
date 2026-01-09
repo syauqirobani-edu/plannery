@@ -91,9 +91,7 @@ def view_task_detail(project_id):
     print(f"Dibuat oleh  : User ID {task['created_by']}")
 
     if assigned_users:
-        print("Ditugaskan ke:")
-        for uid in assigned_users:
-            print(f"- User ID {uid}")
+        print(f"Ditugaskan ke: User ID {assigned_users[0]}")
     else:
         print("Ditugaskan ke: (tidak ada)")
 
@@ -102,8 +100,68 @@ def create_task(project_id, current_user):
     assigns = read_assigned_members()
 
     task_name = input("Nama tugas: ")
+    if not task_name.strip():
+        print("Nama tugas tidak boleh kosong.")
+        return
+    if any(not c.isalnum() and not c.isspace() for c in task_name):
+        print("Nama tugas tidak boleh berisi simbol.")
+        return
+
     desc = input("Deskripsi tugas: ")
-    due_date = input("Deadline (HH-BB-TTTT): ")
+    if not desc.strip():
+        print("Deskripsi tugas tidak boleh kosong.")
+        return
+    if any(not c.isalnum() and not c.isspace() for c in desc):
+        print("Deskripsi tugas tidak boleh berisi simbol.")
+        return
+
+    due_date = input("Deadline (YYYY-MM-DD): ")
+    
+    task_name = task_name.strip()
+    desc = desc.strip()
+    due_date = due_date.strip()
+
+    if not due_date:
+        print("Deadline tidak valid.")
+        return
+
+    task_id = len(tasks) + 1
+
+    tasks.append({
+        "task_id": task_id,
+        "project_id": project_id,
+        "task_name": task_name,
+        "task_description": desc,
+        "status": "todo",
+        "due_date": due_date,
+        "created_by": current_user["user_id"]
+    })
+
+    assigned_user = input("Masukkan ID anggota yang ditugaskan: ")
+    if not assigned_user.isdigit():
+        print("ID anggota harus berupa angka.")
+        return
+
+    assigns.append({
+        "task_id": task_id,
+        "user_id": int(assigned_user)
+    })
+
+    with open(TASKS_FILE, "w") as f:
+        f.write("task_id,project_id,task_name,task_description,status,due_date,created_by\n")
+        for t in tasks:
+            f.write(
+                f"{t['task_id']},{t['project_id']},{t['task_name']},"
+                f"{t['task_description']},{t['status']},"
+                f"{t['due_date']},{t['created_by']}\n"
+            )
+
+    with open(ASSIGNED_FILE, "w") as f:
+        f.write("task_id,user_id\n")
+        for a in assigns:
+            f.write(f"{a['task_id']},{a['user_id']}\n")
+
+    print("Tugas berhasil dibuat.")
 
     task_id = len(tasks) + 1
 
