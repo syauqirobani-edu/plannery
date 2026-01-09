@@ -10,20 +10,86 @@ from projects.projects import (
     leave_project
 )
 
+from tasks.tasks import (
+    view_tasks,
+    view_task_detail,
+    create_task,
+    view_my_tasks,
+    edit_task,
+    delete_task,
+    mark_task_done
+)
+
+def task_menu_owner(project_id, current_user):
+    while True:
+        print("\n=== Menu Tugas (Pemilik) ===")
+        view_tasks(project_id)
+
+        print("\nMenu:")
+        print("1. Lihat Detail Tugas")
+        print("2. Buat Tugas")
+        print("3. Edit Tugas")
+        print("4. Hapus Tugas")
+        print("5. Kembali")
+
+        choice = input("Pilih menu: ")
+
+        if choice == "1":
+            view_task_detail(project_id)
+        elif choice == "2":
+            create_task(project_id, current_user)
+
+        elif choice == "3":
+            edit_task(project_id, current_user)
+
+        elif choice == "4":
+            delete_task(project_id, current_user)
+
+        elif choice == "5":
+            break
+
+        else:
+            print("Pilihan tidak valid.")
+
+
+def task_menu_member(project_id, current_user):
+    while True:
+        print("\n=== Menu Tugas (Anggota) ===")
+        view_my_tasks(project_id, current_user)
+
+        print("\nMenu:")
+        print("1. Lihat detail tugas")
+        print("2. Tandai selesai")
+        print("3. Kembali")
+
+        choice = input("Pilih menu: ")
+
+        if choice == "1":
+            view_task_detail(project_id)
+        elif choice == "2":
+            mark_task_done(project_id, current_user)
+        elif choice == "2":
+            break
+
+        else:
+            print("Pilihan tidak valid.")
 
 def project_menu(current_user):
     while True:
         print("\n=== Menu Proyek ===")
-        print("1. Lihat Daftar Proyek (Status: Pemilik)")
-        print("2. Lihat Daftar Proyek (Status: Anggota)")
+        print("1. Daftar Proyek (status: Pemilik)")
+        print("2. Daftar Proyek (status: Anggota)")
         print("3. Logout")
 
         choice = input("Pilih menu: ")
 
         if choice == "1":
             while True:
-                print("\n--- Proyek sebagai Pemilik ---")
-                print("1. Lihat Daftar Proyek")
+                print("\n--- Daftar Proyek (status: Pemilik) ---")
+                view_owned_projects(current_user)
+
+                print("\nMenu:")
+                print("1. Buka Proyek")
                 print("2. Buat Proyek")
                 print("3. Edit Proyek")
                 print("4. Hapus Proyek")
@@ -32,7 +98,11 @@ def project_menu(current_user):
                 sub_choice = input("Pilih menu: ")
 
                 if sub_choice == "1":
-                    view_owned_projects(current_user)
+                    try:
+                        project_id = int(input("Masukkan ID proyek: "))
+                        task_menu_owner(project_id, current_user)
+                    except ValueError:
+                        print("ID proyek harus berupa angka.")
 
                 elif sub_choice == "2":
                     create_project(current_user)
@@ -51,16 +121,23 @@ def project_menu(current_user):
 
         elif choice == "2":
             while True:
-                print("\n--- Proyek sebagai Anggota ---")
-                print("1. Lihat Daftar Proyek")
-                print("2. Gabung Proyek (Kode Proyek)")
+                print("\n--- Daftar Proyek (status: Anggota) ---")
+                view_joined_projects(current_user)
+
+                print("\nMenu:")
+                print("1. Buka Proyek")
+                print("2. Gabung Proyek")
                 print("3. Keluar dari Proyek")
                 print("4. Kembali")
 
                 sub_choice = input("Pilih menu: ")
 
                 if sub_choice == "1":
-                    view_joined_projects(current_user)
+                    try:
+                        project_id = int(input("Masukkan ID proyek: "))
+                        task_menu_member(project_id, current_user)
+                    except ValueError:
+                        print("ID proyek harus berupa angka.")
 
                 elif sub_choice == "2":
                     join_project(current_user)
@@ -80,7 +157,6 @@ def project_menu(current_user):
 
         else:
             print("Pilihan tidak valid.")
-
 
 def main_menu():
     while True:
