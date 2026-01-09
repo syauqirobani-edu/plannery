@@ -84,7 +84,7 @@ def create_task(project_id, current_user):
 
     # validasi deadline
     if not due_date:
-        print("Deadline tidak valid! (YYYY-MM-DD)")
+        print("Deadline tidak valid! Format deadline: (YYYY-MM-DD)")
         return
 
     task_id = len(tasks) + 1
