@@ -12,9 +12,12 @@ from projects.projects import (
 
 from tasks.tasks import (
     view_tasks,
+    view_task_detail,
     create_task,
     view_my_tasks,
-    submit_task
+    edit_task,
+    delete_task,
+    mark_task_done
 )
 
 def task_menu_owner(project_id, current_user):
@@ -23,23 +26,26 @@ def task_menu_owner(project_id, current_user):
         view_tasks(project_id)
 
         print("\nMenu:")
-        print("1. Buat Tugas")
-        print("2. Edit Tugas")
-        print("3. Hapus Tugas")
-        print("4. Kembali")
+        print("1. Lihat Detail Tugas")
+        print("2. Buat Tugas")
+        print("3. Edit Tugas")
+        print("4. Hapus Tugas")
+        print("5. Kembali")
 
         choice = input("Pilih menu: ")
 
         if choice == "1":
+            view_task_detail(project_id)
+        elif choice == "2":
             create_task(project_id, current_user)
 
-        elif choice == "2":
-            print("Edit tugas masih dalam pengembangan (WIP).")
-
         elif choice == "3":
-            print("Hapus tugas masih dalam pengembangan (WIP).")
+            edit_task(project_id, current_user)
 
         elif choice == "4":
+            delete_task(project_id, current_user)
+
+        elif choice == "5":
             break
 
         else:
@@ -52,14 +58,16 @@ def task_menu_member(project_id, current_user):
         view_my_tasks(project_id, current_user)
 
         print("\nMenu:")
-        print("1. Submit Tugas")
-        print("2. Kembali")
+        print("1. Lihat detail tugas")
+        print("2. Tandai selesai")
+        print("3. Kembali")
 
         choice = input("Pilih menu: ")
 
         if choice == "1":
-            submit_task()
-
+            view_task_detail(project_id)
+        elif choice == "2":
+            mark_task_done(project_id, current_user)
         elif choice == "2":
             break
 
