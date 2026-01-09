@@ -83,12 +83,18 @@ def create_project(current_user):
     projects = read_projects()
     members = read_members()
 
-    project_name = input("Nama proyek: ")
-
-    # TODO: Hapus whitespace tidak perlu dari variabel "project_name" inputan pengguna.
-    # TODO: Tolak apabila variabel "project_name" kosong.
-    # TODO: Tolak apabila variabel "project_name" hanya terdiri dari whitespace.
-    # TODO: Tolak apabila variabel "project_name" mempunyai simbol.
+    while True:
+        project_name = input("Nama proyek: ").strip()
+        
+        if not project_name:
+            print("Nama proyek tidak boleh kosong.")
+            continue
+        
+        if not all(c.isalnum() or c.isspace() for c in project_name):
+            print("Nama proyek tidak boleh mengandung simbol.")
+            continue
+        
+        break
 
     project_id = get_next_project_id(projects)
     project_code = generate_project_code(project_id)
@@ -120,19 +126,25 @@ def create_project(current_user):
     print("Kode proyek:", project_code)
 
 def edit_project(current_user):
-    
     projects = read_projects()
 
     project_id = int(input("Masukkan ID proyek yang ingin diedit: "))
 
     for p in projects:
         if p["project_id"] == project_id and p["created_by"] == current_user["user_id"]:
-            new_name = input("Nama proyek baru: ")
-
-            # TODO: Hapus whitespace tidak perlu dari variabel "new_name" inputan pengguna.
-            # TODO: Tolak apabila variabel "new_name" kosong.
-            # TODO: Tolak apabila variabel "new_name" hanya terdiri dari whitespace.
-            # TODO: Tolak apabila variabel "new_name" mempunyai simbol.
+            while True:
+                new_name = input("Nama proyek baru: ").strip()
+                
+                if not new_name:
+                    print("Nama proyek tidak boleh kosong.")
+                    continue
+                
+                if not all(c.isalnum() or c.isspace() for c in new_name):
+                    print("Nama proyek tidak boleh mengandung simbol.")
+                    continue
+                
+                break
+            
             p["project_name"] = new_name
 
             with open(PROJECTS_FILE, "w") as file:
