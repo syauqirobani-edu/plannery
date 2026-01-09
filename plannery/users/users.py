@@ -58,7 +58,7 @@ def register():
         print("Nama pengguna tidak boleh kosong!")
         return
     
-    username = username.strip()
+    username = username.split()
 
     for char in username:
         if char in simbol:
@@ -97,7 +97,7 @@ def register():
     confirm_password = input ("Konfirmasi kata sandi: ")
 
 
-    if not check_password(password, confirm_password):
+    if password != confirm_password:
         print("Kata sandi tidak sama! silahkan konfirmasi kembali kata sandi.")
         return
     
