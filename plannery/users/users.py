@@ -75,7 +75,7 @@ def register():
         print("Kata sandi tidak boleh kosong!")
         return
 
-    if len (password) < 8 :
+    if len(password) < 8 :
         print("Kata sandi minimal 8 karakter!")
         return
 
@@ -91,13 +91,13 @@ def register():
         return
 
     if "," in password:
-        print("Kata sandi tidak boleh mengandung koma")
+        print("Kata sandi tidak boleh mengandung koma!")
         return
 
     confirm_password = input ("Konfirmasi kata sandi: ")
 
 
-    if password != confirm_password:
+    if not check_password(password, confirm_password):
         print("Kata sandi tidak sama! silahkan konfirmasi kembali kata sandi.")
         return
     
