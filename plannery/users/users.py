@@ -45,25 +45,63 @@ def username_exists(username):
             return True
     return False
 
+def check_password(password, confirm_password):
+    return password == confirm_password
+
 def register():
     users = read_users()
+    simbol = "!@#$%^&*().?\":{}|<>"
 
     username = input("Nama Pengguna: ")
 
-    # TODO: Tolak apabila variabel "username" kosong.
-    # TODO: Hapus whitespace tidak perlu dari variabel "username".
-    # TODO: Tolak simbol pada variabel "username."
+    if not username: 
+        print("Nama pengguna tidak boleh kosong!")
+        return
+    
+    username = username.strip()
+
+    for char in username:
+        if char in simbol:
+            print("Nama pengguna tidak boleh mengandung simbol!")
+            return
 
     if username_exists(username):
         print("Nama pengguna sudah dipakai.")
         return
     
-    password = input("Kata Sandi: ")
+    password = input("Masukkan Kata Sandi : ")
 
-    # TODO: Tolak apabila variabel "password" kosong.
-    # TODO: Tolak apabila variabel "password" kurang dari 8 karakter.
-    # TODO: Tolak apabila terdapat koma pada variabel "password".
-    # TODO: Buat variabel "confirm_password" di mana pengguna diharuskan untuk meng-input variabel "password" kembali, dan buat function untuk membandingkan keduanya.
+    if not password:
+        print("Kata sandi tidak boleh kosong!")
+        return
+
+    if len (password) < 8 :
+        print("Kata sandi minimal 8 karakter!")
+        return
+
+    ada_simbol = False
+
+    for char in password:
+        if char in simbol:
+            ada_simbol = True
+            break
+
+    if not ada_simbol:
+        print("Kata sandi harus mengandung minimal satu simbol!")
+        return
+
+    if "," in password:
+        print("Kata sandi tidak boleh mengandung koma")
+        return
+
+    confirm_password = input ("Konfirmasi kata sandi: ")
+
+
+    if not check_password(password, confirm_password):
+        print("Kata sandi tidak sama! silahkan konfirmasi kembali kata sandi.")
+        return
+    
+    print("Kata sandi valid")
 
     new_id = get_next_user_id(users)
 
@@ -81,7 +119,7 @@ def register():
 
     
     print("Pengguna berhasil teregistrasi!")
-    print("ID pengguna Anda alah: ", new_id)
+    print("ID pengguna Anda adalah: ", new_id)
 
 def login():
     users = read_users()
