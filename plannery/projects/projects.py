@@ -10,10 +10,10 @@ def read_projects():
         if len(lines) <= 1:
             return projects
 
-        headers = lines[0].strip().split(",")
+        headers = lines[0].strip().split("|")
 
         for line in lines[1:]:
-            values = line.strip().split(",")
+            values = line.strip().split("|")
             project = {}
 
             for i in range(len(headers)):
@@ -35,10 +35,10 @@ def read_members():
         if len(lines) <= 1:
             return members
 
-        headers = lines[0].strip().split(",")
+        headers = lines[0].strip().split("|")
 
         for line in lines[1:]:
-            values = line.strip().split(",")
+            values = line.strip().split("|")
             member = {}
 
             for i in range(len(headers)):
@@ -62,13 +62,24 @@ def get_next_project_id(projects):
 
     return max_id + 1
 
+def is_project_owner(project_id, current_user):
+    members = read_members()
+    for m in members:
+        if (
+            m["project_id"] == project_id and
+            m["user_id"] == current_user["user_id"] and
+            m["role"] == "owner"
+        ):
+            return True
+    return False
+
+
 def generate_project_code(project_id):
     return "PRJ" + str(project_id)
 
 def view_owned_projects(current_user):
     projects = read_projects()
 
-    print("\n=== Proyek yang Anda Miliki ===")
     found = False
 
     for p in projects:
@@ -84,14 +95,14 @@ def create_project(current_user):
     members = read_members()
 
     while True:
-        project_name = input("Nama proyek: ").strip()
+        project_name = input("\nMasukkan nama proyek: ").strip()
         
         if not project_name:
-            print("Nama proyek tidak boleh kosong.")
+            print("\nNama proyek tidak boleh kosong.")
             continue
         
         if not all(c.isalnum() or c.isspace() for c in project_name):
-            print("Nama proyek tidak boleh mengandung simbol.")
+            print("\nNama proyek tidak boleh mengandung simbol.")
             continue
         
         break
@@ -107,9 +118,9 @@ def create_project(current_user):
     })
 
     with open(PROJECTS_FILE, "w") as file:
-        file.write("project_id,project_name,project_code,created_by\n")
+        file.write("project_id|project_name|project_code|created_by\n")
         for p in projects:
-            file.write(f"{p['project_id']},{p['project_name']},{p['project_code']},{p['created_by']}\n")
+            file.write(f"{p['project_id']}|{p['project_name']}|{p['project_code']}|{p['created_by']}\n")
 
     members.append({
         "project_id": project_id,
@@ -118,29 +129,29 @@ def create_project(current_user):
     })
 
     with open(MEMBERS_FILE, "w") as file:
-        file.write("project_id,user_id,role\n")
+        file.write("project_id|user_id|role\n")
         for m in members:
-            file.write(f"{m['project_id']},{m['user_id']},{m['role']}\n")
+            file.write(f"{m['project_id']}|{m['user_id']}|{m['role']}\n")
 
-    print("Proyek berhasil dibuat!")
+    print("\nProyek berhasil dibuat!")
     print("Kode proyek:", project_code)
 
 def edit_project(current_user):
     projects = read_projects()
 
-    project_id = int(input("Masukkan ID proyek yang ingin diedit: "))
+    project_id = int(input("\nMasukkan ID proyek: "))
 
     for p in projects:
         if p["project_id"] == project_id and p["created_by"] == current_user["user_id"]:
             while True:
-                new_name = input("Nama proyek baru: ").strip()
+                new_name = input("\nNama proyek baru: ").strip()
                 
                 if not new_name:
-                    print("Nama proyek tidak boleh kosong.")
+                    print("\nNama proyek tidak boleh kosong.")
                     continue
                 
                 if not all(c.isalnum() or c.isspace() for c in new_name):
-                    print("Nama proyek tidak boleh mengandung simbol.")
+                    print("\nNama proyek tidak boleh mengandung simbol.")
                     continue
                 
                 break
@@ -148,22 +159,22 @@ def edit_project(current_user):
             p["project_name"] = new_name
 
             with open(PROJECTS_FILE, "w") as file:
-                file.write("project_id,project_name,project_code,created_by\n")
+                file.write("project_id|project_name|project_code|created_by\n")
                 for proj in projects:
                     file.write(
-                        f"{proj['project_id']},{proj['project_name']},{proj['project_code']},{proj['created_by']}\n"
+                        f"{proj['project_id']}|{proj['project_name']}|{proj['project_code']}|{proj['created_by']}\n"
                     )
 
-            print("Proyek berhasil diperbarui.")
+            print("\nProyek berhasil diperbarui.")
             return
 
-    print("Proyek tidak ditemukan atau Anda bukan pemiliknya.")
+    print("\nProyek tidak ditemukan atau Anda bukan pemiliknya.")
 
 def delete_project(current_user):
     projects = read_projects()
     members = read_members()
 
-    project_id = int(input("Masukkan ID proyek yang ingin dihapus: "))
+    project_id = int(input("\nMasukkan ID proyek yang ingin dihapus: "))
 
     project_found = False
     new_projects = []
@@ -175,7 +186,7 @@ def delete_project(current_user):
             new_projects.append(p)
 
     if not project_found:
-        print("Proyek tidak ditemukan atau Anda bukan pemiliknya.")
+        print("\nProyek tidak ditemukan atau Anda bukan pemiliknya.")
         return
 
     new_members = []
@@ -184,22 +195,32 @@ def delete_project(current_user):
             new_members.append(m)
 
     with open(PROJECTS_FILE, "w") as file:
-        file.write("project_id,project_name,project_code,created_by\n")
+        file.write("project_id|project_name|project_code|created_by\n")
         for p in new_projects:
-            file.write(f"{p['project_id']},{p['project_name']},{p['project_code']},{p['created_by']}\n")
+            file.write(f"{p['project_id']}|{p['project_name']}|{p['project_code']}|{p['created_by']}\n")
 
     with open(MEMBERS_FILE, "w") as file:
-        file.write("project_id,user_id,role\n")
+        file.write("project_id|user_id|role\n")
         for m in new_members:
-            file.write(f"{m['project_id']},{m['user_id']},{m['role']}\n")
+            file.write(f"{m['project_id']}|{m['user_id']}|{m['role']}\n")
 
-    print("Proyek berhasil dihapus.")
+    print("\nProyek berhasil dihapus.")
+
+def is_project_member(project_id, current_user):
+    members = read_members()
+    for m in members:
+        if (
+            m["project_id"] == project_id and
+            m["user_id"] == current_user["user_id"] and
+            m["role"] == "member"
+        ):
+            return True
+    return False
 
 def view_joined_projects(current_user):
     projects = read_projects()
     members = read_members()
 
-    print("\n=== Proyek yang Anda Ikuti ===")
     found = False
 
     for m in members:
@@ -216,7 +237,7 @@ def join_project(current_user):
     projects = read_projects()
     members = read_members()
 
-    code = input("Masukkan kode proyek: ")
+    code = input("\nMasukkan kode proyek: ")
 
     project = None
     for p in projects:
@@ -225,12 +246,12 @@ def join_project(current_user):
             break
 
     if project is None:
-        print("Kode proyek tidak ditemukan.")
+        print("\nKode proyek tidak ditemukan.")
         return
 
     for m in members:
         if m["project_id"] == project["project_id"] and m["user_id"] == current_user["user_id"]:
-            print("Anda sudah menjadi anggota proyek ini.")
+            print("\nAnda sudah menjadi anggota proyek ini.")
             return
 
     members.append({
@@ -240,16 +261,22 @@ def join_project(current_user):
     })
 
     with open(MEMBERS_FILE, "w") as file:
-        file.write("project_id,user_id,role\n")
+        file.write("project_id|user_id|role\n")
         for m in members:
-            file.write(f"{m['project_id']},{m['user_id']},{m['role']}\n")
+            file.write(f"{m['project_id']}|{m['user_id']}|{m['role']}\n")
 
-    print("Berhasil bergabung ke proyek:", project["project_name"])
+    print("\nBerhasil bergabung ke proyek:", project["project_name"])
 
 def leave_project(current_user):
     members = read_members()
 
-    project_id = int(input("Masukkan ID proyek yang ingin ditinggalkan: "))
+    project_id = input("\nMasukkan ID proyek: ")
+
+    if not project_id.isdigit():
+        print("\nID proyek harus berupa angka.")
+        return
+    
+    project_id = int(project_id)
 
     new_members = []
     left = False
@@ -261,12 +288,12 @@ def leave_project(current_user):
             new_members.append(m)
 
     if not left:
-        print("Anda bukan anggota proyek ini atau proyek tidak ditemukan.")
+        print("\nAnda bukan anggota proyek ini atau proyek tidak ditemukan.")
         return
 
     with open(MEMBERS_FILE, "w") as file:
-        file.write("project_id,user_id,role\n")
+        file.write("project_id|user_id|role\n")
         for m in new_members:
-            file.write(f"{m['project_id']},{m['user_id']},{m['role']}\n")
+            file.write(f"{m['project_id']}|{m['user_id']}|{m['role']}\n")
 
-    print("Anda telah keluar dari proyek.")
+    print("\nAnda telah keluar dari proyek.")

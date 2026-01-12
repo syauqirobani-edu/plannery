@@ -1,2 +1,1 @@
-task_id,user_id
-1,2
+task_id|user_id

@@ -1,6 +1,7 @@
 TASKS_FILE = "data/tasks.txt"
 ASSIGNED_FILE = "data/assigned_members.txt"
 
+
 def read_tasks():
     tasks = []
     with open(TASKS_FILE, "r") as file:
@@ -8,10 +9,10 @@ def read_tasks():
         if len(lines) <= 1:
             return tasks
 
-        headers = lines[0].strip().split(",")
+        headers = lines[0].strip().split("|")
 
         for line in lines[1:]:
-            values = line.strip().split(",")
+            values = line.strip().split("|")
             task = {}
 
             for i in range(len(headers)):
@@ -30,10 +31,10 @@ def read_assigned_members():
         if len(lines) <= 1:
             return assigns
 
-        headers = lines[0].strip().split(",")
+        headers = lines[0].strip().split("|")
 
         for line in lines[1:]:
-            values = line.strip().split(",")
+            values = line.strip().split("|")
             assigns.append({
                 "task_id": int(values[0]),
                 "user_id": int(values[1])
@@ -44,7 +45,6 @@ def view_tasks(project_id):
     tasks = read_tasks()
     found = False
 
-    print("\n=== Daftar Tugas ===")
     for t in tasks:
         if t["project_id"] == project_id:
             print(
@@ -60,10 +60,10 @@ def view_task_detail(project_id):
     tasks = read_tasks()
     assigns = read_assigned_members()
 
-    task_id = input("Masukkan ID tugas: ")
+    task_id = input("\nMasukkan ID tugas: ")
 
     if not task_id.isdigit():
-        print("ID tugas harus berupa angka.")
+        print("\nID tugas harus berupa angka.")
         return
 
     task_id = int(task_id)
@@ -75,14 +75,14 @@ def view_task_detail(project_id):
             break
 
     if task is None:
-        print("Tugas tidak ditemukan.")
+        print("\nTugas tidak ditemukan.")
         return
 
     assigned_users = [
         a["user_id"] for a in assigns if a["task_id"] == task_id
     ]
 
-    print("\n=== Detail Tugas ===")
+    print("\n========== Detail Tugas ==========")
     print(f"ID           : {task['task_id']}")
     print(f"Nama         : {task['task_name']}")
     print(f"Deskripsi    : {task['task_description']}")
@@ -94,35 +94,39 @@ def view_task_detail(project_id):
         print(f"Ditugaskan ke: User ID {assigned_users[0]}")
     else:
         print("Ditugaskan ke: (tidak ada)")
+    print("==================================")
 
 def create_task(project_id, current_user):
     tasks = read_tasks()
     assigns = read_assigned_members()
 
-    task_name = input("Nama tugas: ")
+    task_name = input("\nNama tugas: ")
     if not task_name.strip():
-        print("Nama tugas tidak boleh kosong.")
+        print("\nNama tugas tidak boleh kosong.")
         return
     if any(not c.isalnum() and not c.isspace() for c in task_name):
-        print("Nama tugas tidak boleh berisi simbol.")
+        print("\nNama tugas tidak boleh berisi simbol.")
         return
 
     desc = input("Deskripsi tugas: ")
+
     if not desc.strip():
-        print("Deskripsi tugas tidak boleh kosong.")
-        return
-    if any(not c.isalnum() and not c.isspace() for c in desc):
-        print("Deskripsi tugas tidak boleh berisi simbol.")
+        print("\nDeskripsi tugas tidak boleh kosong.")
         return
 
-    due_date = input("Deadline (YYYY-MM-DD): ")
+    if "|" in desc:
+        print("\nDeskripsi tugas tidak boleh mengandung karakter '|'.")
+        return
+
+
+    due_date = input("Deadline (Hari-Bulan-Tahun): ")
     
     task_name = task_name.strip()
     desc = desc.strip()
     due_date = due_date.strip()
 
     if not due_date:
-        print("Deadline tidak valid.")
+        print("\nDeadline tidak valid.")
         return
 
     task_id = len(tasks) + 1
@@ -137,9 +141,9 @@ def create_task(project_id, current_user):
         "created_by": current_user["user_id"]
     })
 
-    assigned_user = input("Masukkan ID anggota yang ditugaskan: ")
+    assigned_user = input("\nMasukkan ID anggota yang ditugaskan: ")
     if not assigned_user.isdigit():
-        print("ID anggota harus berupa angka.")
+        print("\nID anggota harus berupa angka.")
         return
 
     assigns.append({
@@ -148,58 +152,20 @@ def create_task(project_id, current_user):
     })
 
     with open(TASKS_FILE, "w") as f:
-        f.write("task_id,project_id,task_name,task_description,status,due_date,created_by\n")
+        f.write("task_id|project_id|task_name|task_description|status|due_date|created_by\n")
         for t in tasks:
             f.write(
-                f"{t['task_id']},{t['project_id']},{t['task_name']},"
-                f"{t['task_description']},{t['status']},"
-                f"{t['due_date']},{t['created_by']}\n"
+                f"{t['task_id']}|{t['project_id']}|{t['task_name']}|"
+                f"{t['task_description']}|{t['status']}|"
+                f"{t['due_date']}|{t['created_by']}\n"
             )
 
     with open(ASSIGNED_FILE, "w") as f:
-        f.write("task_id,user_id\n")
+        f.write("task_id|user_id\n")
         for a in assigns:
-            f.write(f"{a['task_id']},{a['user_id']}\n")
+            f.write(f"{a['task_id']}|{a['user_id']}\n")
 
-    print("Tugas berhasil dibuat.")
-
-    task_id = len(tasks) + 1
-
-    tasks.append({
-        "task_id": task_id,
-        "project_id": project_id,
-        "task_name": task_name,
-        "task_description": desc,
-        "status": "todo",
-        "due_date": due_date,
-        "created_by": current_user["user_id"]
-    })
-
-    assigned_user = input("Masukkan ID anggota yang ditugaskan: ")
-
-    if not assigned_user.isdigit():
-        print("ID anggota harus berupa angka.")
-        return
-
-    assigns.append({
-        "task_id": task_id,
-        "user_id": int(assigned_user)
-    })
-
-    with open(TASKS_FILE, "w") as f:
-        f.write("task_id,project_id,task_name,task_description,status,due_date,created_by\n")
-        for t in tasks:
-            f.write(
-                f"{t['task_id']},{t['project_id']},{t['task_name']},"
-                f"{t['task_description']},{t['status']},{t['due_date']},{t['created_by']}\n"
-            )
-
-    with open(ASSIGNED_FILE, "w") as f:
-        f.write("task_id,user_id\n")
-        for a in assigns:
-            f.write(f"{a['task_id']},{a['user_id']}\n")
-
-    print("Tugas berhasil dibuat.")
+    print("\nTugas berhasil dibuat.")
 
 
 def view_my_tasks(project_id, current_user):
@@ -211,7 +177,6 @@ def view_my_tasks(project_id, current_user):
         if a["user_id"] == current_user["user_id"]
     ]
 
-    print("\n=== Tugas Saya ===")
     found = False
     for t in tasks:
         if t["task_id"] in my_task_ids and t["project_id"] == project_id:
@@ -227,10 +192,10 @@ def view_my_tasks(project_id, current_user):
 def edit_task(project_id, current_user):
     tasks = read_tasks()
 
-    task_id = input("Masukkan ID tugas yang ingin diedit: ")
+    task_id = input("\nMasukkan ID tugas yang ingin diedit: ")
 
     if not task_id.isdigit():
-        print("ID tugas harus berupa angka.")
+        print("\nID tugas harus berupa angka.")
         return
 
     task_id = int(task_id)
@@ -238,14 +203,20 @@ def edit_task(project_id, current_user):
     for t in tasks:
         if t["task_id"] == task_id and t["project_id"] == project_id:
             if t["created_by"] != current_user["user_id"]:
-                print("Anda tidak memiliki izin untuk mengedit tugas ini.")
+                print("\nAnda tidak memiliki izin untuk mengedit tugas ini.")
                 return
 
             print("\nBiarkan kosong jika tidak ingin mengubah.")
-            new_name = input(f"Nama tugas [{t['task_name']}]: ")
-            new_desc = input(f"Deskripsi [{t['task_description']}]: ")
-            new_due = input(f"Deadline [{t['due_date']}]: ")
-            new_status = input(f"Status [{t['status']}]: ")
+            new_name = input(f"\nNama tugas: ")
+            new_desc = input(f"Deskripsi: ")
+            new_due = input(f"Deadline: ")
+            new_status = input(f"Status: ")
+
+            if not new_desc.strip():
+                print("\nDeskripsi tugas tidak boleh kosong.")
+
+            if "|" in new_desc:
+                print("\nDeskripsi tugas tidak boleh mengandung karakter '|'.")
 
             if new_name.strip():
                 t["task_name"] = new_name
@@ -257,27 +228,27 @@ def edit_task(project_id, current_user):
                 t["status"] = new_status
 
             with open(TASKS_FILE, "w") as f:
-                f.write("task_id,project_id,task_name,task_description,status,due_date,created_by\n")
+                f.write("task_id|project_id|task_name|task_description|status|due_date|created_by\n")
                 for task in tasks:
                     f.write(
-                        f"{task['task_id']},{task['project_id']},{task['task_name']},"
-                        f"{task['task_description']},{task['status']},"
-                        f"{task['due_date']},{task['created_by']}\n"
+                        f"{task['task_id']}|{task['project_id']}|{task['task_name']}|"
+                        f"{task['task_description']}|{task['status']}|"
+                        f"{task['due_date']}|{task['created_by']}\n"
                     )
 
-            print("Tugas berhasil diperbarui.")
+            print("\nTugas berhasil diperbarui.")
             return
 
-    print("Tugas tidak ditemukan.")
+    print("\nTugas tidak ditemukan.")
 
 def delete_task(project_id, current_user):
     tasks = read_tasks()
     assigns = read_assigned_members()
 
-    task_id = input("Masukkan ID tugas yang ingin dihapus: ")
+    task_id = input("\nMasukkan ID tugas yang ingin dihapus: ")
 
     if not task_id.isdigit():
-        print("ID tugas harus berupa angka.")
+        print("\nID tugas harus berupa angka.")
         return
 
     task_id = int(task_id)
@@ -288,14 +259,14 @@ def delete_task(project_id, current_user):
     for t in tasks:
         if t["task_id"] == task_id and t["project_id"] == project_id:
             if t["created_by"] != current_user["user_id"]:
-                print("Anda tidak memiliki izin untuk menghapus tugas ini.")
+                print("\nAnda tidak memiliki izin untuk menghapus tugas ini.")
                 return
             task_found = True
             continue
         new_tasks.append(t)
 
     if not task_found:
-        print("Tugas tidak ditemukan.")
+        print("\nTugas tidak ditemukan.")
         return
 
     new_assigns = [
@@ -303,29 +274,29 @@ def delete_task(project_id, current_user):
     ]
 
     with open(TASKS_FILE, "w") as f:
-        f.write("task_id,project_id,task_name,task_description,status,due_date,created_by\n")
+        f.write("task_id|project_id|task_name|task_description|status|due_date|created_by\n")
         for t in new_tasks:
             f.write(
-                f"{t['task_id']},{t['project_id']},{t['task_name']},"
-                f"{t['task_description']},{t['status']},"
-                f"{t['due_date']},{t['created_by']}\n"
+                f"{t['task_id']}|{t['project_id']}|{t['task_name']}|"
+                f"{t['task_description']}|{t['status']}|"
+                f"{t['due_date']}|{t['created_by']}\n"
             )
 
     with open(ASSIGNED_FILE, "w") as f:
-        f.write("task_id,user_id\n")
+        f.write("task_id|user_id\n")
         for a in new_assigns:
-            f.write(f"{a['task_id']},{a['user_id']}\n")
+            f.write(f"{a['task_id']}|{a['user_id']}\n")
 
-    print("Tugas berhasil dihapus.")
+    print("\nTugas berhasil dihapus.")
 
 def mark_task_done(project_id, current_user):
     tasks = read_tasks()
     assigns = read_assigned_members()
 
-    task_id = input("Masukkan ID tugas yang ingin ditandai selesai: ")
+    task_id = input("\nMasukkan ID tugas yang ingin ditandai selesai: ")
 
     if not task_id.isdigit():
-        print("ID tugas harus berupa angka.")
+        print("\nID tugas harus berupa angka.")
         return
 
     task_id = int(task_id)
@@ -337,7 +308,7 @@ def mark_task_done(project_id, current_user):
             break
 
     if not is_assigned:
-        print("Anda tidak ditugaskan pada tugas ini.")
+        print("\nAnda tidak ditugaskan pada tugas ini.")
         return
 
     task_found = False
@@ -346,22 +317,22 @@ def mark_task_done(project_id, current_user):
             task_found = True
 
             if t["status"] == "done":
-                print("Tugas ini sudah ditandai selesai.")
+                print("\nTugas ini sudah ditandai selesai.")
                 return
 
             t["status"] = "done"
             break
 
     if not task_found:
-        print("Tugas tidak ditemukan.")
+        print("\nTugas tidak ditemukan.")
         return
 
     with open(TASKS_FILE, "w") as f:
-        f.write("task_id,project_id,task_name,task_description,status,due_date,created_by\n")
+        f.write("task_id|project_id|task_name|task_description|status|due_date|created_by\n")
         for t in tasks:
             f.write(
-                f"{t['task_id']},{t['project_id']},{t['task_name']},"
-                f"{t['task_description']},{t['status']},{t['due_date']},{t['created_by']}\n"
+                f"{t['task_id']}|{t['project_id']}|{t['task_name']}|"
+                f"{t['task_description']}|{t['status']}|{t['due_date']}|{t['created_by']}\n"
             )
 
-    print("Tugas berhasil ditandai sebagai SELESAI.")
+    print("\nTugas berhasil ditandai sebagai SELESAI.")

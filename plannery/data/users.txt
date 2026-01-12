@@ -1,4 +1,1 @@
-user_id,username,password
-1,Owner,12345
-2,Member,12345
-3,User,12345
+user_id|username|password
